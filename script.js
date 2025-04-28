@@ -21,11 +21,12 @@ przyciskDodaj.addEventListener('click', function() {
 
 przyciskWynik.addEventListener('click', function() {
     if (komitety.length === 0) {
-            alert('Najpierw dodaj komitet!');
-            return;
-        } 
-        obliczWyniki();
-        pokazWyniki(); });
+        alert('Najpierw dodaj komitet!');
+        return;
+    }
+    obliczWyniki();
+    pokazWyniki();
+});
 
 function sprawdzFormularz() {
     let poprawny = true;
@@ -43,8 +44,8 @@ function sprawdzFormularz() {
         poprawny = false;
     }
 
-
-    return poprawny; }
+    return poprawny;
+}
 
 function dodajKomitet() {
     const komitet = {
@@ -52,22 +53,24 @@ function dodajKomitet() {
         koalicja: czyKoalicja.checked,
         glosy: Number(liczbaGlosow.value),
         prog: czyKoalicja.checked ? 8 : 5,
-        procent: 0, przeszedl: false,
-        finalnyProcent: 0 };
-        komitety.push(komitet);
-    }
+        procent: 0,
+        przeszedl: false,
+        finalnyProcent: 0
+    };
+    komitety.push(komitet);
+}
 
 function wyczyscFormularz() {
     nazwaKomitetu.value = '';
     czyKoalicja.checked = false;
-    liczbaGlosow.value = ''; 
+    liczbaGlosow.value = '';
 }
 
 function pokazKomitety() {
     tabelaKomitetow.innerHTML = '';
     let lp = 1;
 
-    for (const komitet of komitety) {
+    komitety.forEach(komitet => {
         const wiersz = tabelaKomitetow.insertRow();
         wiersz.innerHTML = `
             <td>${lp}</td>
@@ -76,40 +79,39 @@ function pokazKomitety() {
             <td>${komitet.glosy}</td>
         `;
         lp++;
-    }
-    
+    });
 }
 
 function obliczWyniki() {
     let suma = 0;
-    for (const komitet of komitety) {
+    komitety.forEach(komitet => {
         suma += komitet.glosy;
-    }
+    });
 
     let wazneGlosy = 0;
-    for (const komitet of komitety) {
+    komitety.forEach(komitet => {
         komitet.procent = (komitet.glosy / suma) * 100;
         komitet.przeszedl = komitet.procent >= komitet.prog;
         if (komitet.przeszedl) {
             wazneGlosy += komitet.glosy;
-        } 
-    }
+        }
+    });
 
-    for (const komitet of komitety) {
+    komitety.forEach(komitet => {
         if (komitet.przeszedl) {
             komitet.finalnyProcent = (komitet.glosy / wazneGlosy) * 100;
         }
-    }
+    });
 }
 
 function pokazWyniki() {
     tabelaWynikow.innerHTML = '';
     let lp = 1;
 
-    for (const komitet of komitety) {
+    komitety.forEach(komitet => {
         const kolor = komitet.przeszedl ? 'green' : 'red';
         const opis = komitet.przeszedl ? 'Przekroczono próg' : 'Poniżej progu';
-    
+
         const wiersz = tabelaWynikow.insertRow();
         wiersz.innerHTML = `
             <td>${lp}</td>
@@ -121,6 +123,5 @@ function pokazWyniki() {
             </td>
         `;
         lp++;
-    }
-    
+    });
 }
