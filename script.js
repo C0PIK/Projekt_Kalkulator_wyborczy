@@ -37,10 +37,12 @@ function sprawdzFormularz() {
         poprawny = false;
     }
 
-    if (!liczbaGlosow.value || Number(liczbaGlosow.value) <= 0) {
+    const glosy = Number(liczbaGlosow.value);
+    if (glosy <= 0) {
         bladGlosy.textContent = 'Podaj liczbę głosów większą niż 0';
         poprawny = false;
     }
+
 
     return poprawny; }
 
@@ -67,12 +69,15 @@ function pokazKomitety() {
 
     for (const komitet of komitety) {
         const wiersz = tabelaKomitetow.insertRow();
-        wiersz.innerHTML = '<td>' + lp + '</td>' +
-        '<td>' + komitet.nazwa + '</td>' +
-        '<td>' + (komitet.koalicja ? 'Tak' : 'Nie') + '</td>' +
-        '<td>' + komitet.glosy + '</td>';
+        wiersz.innerHTML = `
+            <td>${lp}</td>
+            <td>${komitet.nazwa}</td>
+            <td>${komitet.koalicja ? 'Tak' : 'Nie'}</td>
+            <td>${komitet.glosy}</td>
+        `;
         lp++;
     }
+    
 }
 
 function obliczWyniki() {
@@ -104,16 +109,18 @@ function pokazWyniki() {
     for (const komitet of komitety) {
         const kolor = komitet.przeszedl ? 'green' : 'red';
         const opis = komitet.przeszedl ? 'Przekroczono próg' : 'Poniżej progu';
-
-    const wiersz = tabelaWynikow.insertRow();
-    wiersz.innerHTML = 
-        '<td>' + lp + '</td>' +
-        '<td>' + komitet.nazwa + '</td>' +
-        '<td>' + komitet.prog + '%</td>' +
-        '<td>' + komitet.glosy + '</td>' +
-        '<td style="color:' + kolor + ';">' +
-        komitet.procent.toFixed(2) + '% (' + opis + ')' +
-        '</td>';
+    
+        const wiersz = tabelaWynikow.insertRow();
+        wiersz.innerHTML = `
+            <td>${lp}</td>
+            <td>${komitet.nazwa}</td>
+            <td>${komitet.prog}%</td>
+            <td>${komitet.glosy}</td>
+            <td style="color: ${kolor};">
+                ${komitet.procent.toFixed(2)}% (${opis})
+            </td>
+        `;
         lp++;
     }
+    
 }
